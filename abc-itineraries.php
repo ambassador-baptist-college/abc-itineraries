@@ -57,7 +57,7 @@ function itinerary() {
         'show_in_admin_bar'     => true,
         'show_in_nav_menus'     => true,
         'can_export'            => true,
-        'has_archive'           => 'resources/traveling-groups/all-meetings',
+        'has_archive'           => 'meetings',
         'exclude_from_search'   => false,
         'publicly_queryable'    => true,
         'capability_type'       => 'page',
@@ -101,7 +101,7 @@ function meeting_categories() {
         'show_in_nav_menus'          => true,
         'show_tagcloud'              => true,
     );
-    register_taxonomy( 'itinerary_category', array( 'meeting' ), $args );
+    register_taxonomy( 'group-name', array( 'meeting' ), $args );
 
 }
 add_action( 'init', 'meeting_categories', 0 );
