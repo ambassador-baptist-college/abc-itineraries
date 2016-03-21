@@ -122,6 +122,13 @@ function sort_meetings( $query ) {
         $query->set( 'orderby', 'meta_value_num' );
         $query->set( 'meta_key', 'begin_date' );
         $query->set( 'order', 'ASC' );
+        $query->set( 'meta_query', array(
+            array(
+                'key'       => 'begin_date',
+                'value'     => date( 'Y-m-d' ),
+                'compare'   => '>=',
+            ),
+        ));
     }
 }
 add_filter( 'pre_get_posts', 'sort_meetings' );
