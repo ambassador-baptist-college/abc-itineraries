@@ -115,3 +115,13 @@ function get_meeting_archive_template( $archive_template ) {
      return $archive_template;
 }
 add_filter( 'archive_template', 'get_meeting_archive_template' ) ;
+
+// Sort by beginning date ascending
+function sort_meetings( $query ) {
+    if ( isset($query->query_vars['post_type']) && $query->query_vars['post_type'] == 'meeting' ) {
+        $query->set( 'orderby', 'meta_value_num' );
+        $query->set( 'meta_key', 'begin_date' );
+        $query->set( 'order', 'ASC' );
+    }
+}
+add_filter( 'pre_get_posts', 'sort_meetings' );
