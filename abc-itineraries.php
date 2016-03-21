@@ -106,3 +106,12 @@ function meeting_categories() {
 }
 add_action( 'init', 'meeting_categories', 0 );
 
+// Add custom archive template
+function get_meeting_archive_template( $archive_template ) {
+     global $post;
+     if ( is_post_type_archive ( 'meeting' ) ) {
+          $archive_template = dirname( __FILE__ ) . '/archive-meeting.php';
+     }
+     return $archive_template;
+}
+add_filter( 'archive_template', 'get_meeting_archive_template' ) ;
