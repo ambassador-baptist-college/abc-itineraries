@@ -18,48 +18,132 @@
 
 get_header(); ?>
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
 
-		<?php if ( have_posts() ) : ?>
+        <?php if ( have_posts() ) : ?>
 
-			<header class="page-header">
+            <header class="page-header">
                 <h1 class="page-title">All Meetings</h1>
-				<?php
-					the_archive_description( '<div class="taxonomy-description">', '</div>' );
-				?>
-			</header><!-- .page-header -->
+                <?php
+                    the_archive_description( '<div class="taxonomy-description">', '</div>' );
+                ?>
+            </header><!-- .page-header -->
 
-			<?php
-			// Start the Loop.
-			while ( have_posts() ) : the_post();
+            <table>
+            <?php
+            // Start the Loop.
+            while ( have_posts() ) : the_post(); ?>
+                <tr id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+                    <td class="date">
+                       <?php
+                        // format
+                        $begin_date = DateTime::createFromFormat( 'Y-m-d', get_field( 'begin_date' ) );
+                        if ( get_field( 'end_date' ) ) {
+                            $end_date = DateTime::createFromFormat( 'Y-m-d', get_field( 'end_date' ) );
+                        }
 
-				/*
-				 * Include the Post-Format-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', get_post_format() );
+                        // output dates
+                        if ( get_field( 'end_date' ) ) {
+                            echo $begin_date->format( 'l, F j' ) . '&ndash;' . $end_date->format( 'l, F j, Y' );
+                        } else {
+                            echo $begin_date->format( 'l, F j, Y' );
+                        }
 
-			// End the loop.
-			endwhile;
+                        // time
+                        if ( get_field( 'am_pm' ) ) {
+                            echo ' ';
+                            the_field( 'am_pm' );
+                        }
 
-			// Previous/next page navigation.
-			the_posts_pagination( array(
-				'prev_text'          => __( 'Previous page', 'twentysixteen' ),
-				'next_text'          => __( 'Next page', 'twentysixteen' ),
-				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentysixteen' ) . ' </span>',
-			) );
+                        // group
+                        $terms = get_the_terms( get_the_ID(), 'group-name' );
+                        if ( $terms ) {
+                            $terms_output = NULL;
+                            foreach ( $terms as $term ) {
+                                $terms_output .= sprintf(
+                                    '<a href="%1$s" title="%2$s">%2$s</a>, ',
+                                    get_term_link( $term->term_id ),
+                                    $term->name
+                                );
+                            }
+                            echo rtrim( '<br/>' . $terms_output, ', ' );
+                        }
+                        ?>
+                    </td>
+                    <td class="church">
+                        <?php
+                        // church name
+                        the_title();
 
-		// If no content, include the "No posts found" template.
-		else :
-			get_template_part( 'template-parts/content', 'none' );
+                        // pastor
+                        if ( get_field( 'pastor_name' ) ) {
+                            echo '<br/><span class="pastor">' . get_field( 'pastor_name' ) . '</span>';
+                        }
+                        ?>
+                    </td>
+                    <td class="location">
+                       <?php
+                        // address 1
+                        if ( get_field( 'address_1' ) ) {
+                            the_field( 'address_1' );
+                            echo '<br/>';
+                        }
 
-		endif;
-		?>
+                        // address 2
+                        if ( get_field( 'address_2' ) ) {
+                            the_field( 'address_2' );
+                            echo '<br/>';
+                        }
 
-		</main><!-- .site-main -->
-	</div><!-- .content-area -->
+                        // city
+                        if ( get_field( 'city' ) ) {
+                            the_field( 'city' );
+                            echo ', ';
+                        }
+                        // state
+                        if ( get_field( 'state' ) ) {
+                            the_field( 'state' );
+                            echo ' ';
+                        }
+
+                        // zip
+                        if ( get_field( 'zip' ) ) {
+                            the_field( 'zip' );
+                            echo '<br/>';
+                        }
+
+                        // phone
+                        if ( get_field( 'phone' ) ) {
+                            echo '<a href="tel:' . str_replace( '-', '', get_field( 'phone' ) ) . '">' . get_field( 'phone' ) . '</a>';
+                        }
+                        ?>
+                    </td>
+                </tr><!-- #post-## -->
+
+            <?php
+            // End the loop.
+            endwhile;
+
+            // Previous/next page navigation.
+            the_posts_pagination( array(
+                'prev_text'          => __( 'Previous page', 'twentysixteen' ),
+                'next_text'          => __( 'Next page', 'twentysixteen' ),
+                'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentysixteen' ) . ' </span>',
+            ) ); ?>
+
+            </table>
+
+        <?php
+        // If no content, include the "No posts found" template.
+        else :
+            get_template_part( 'template-parts/content', 'none' );
+
+        endif;
+        ?>
+
+        </main><!-- .site-main -->
+    </div><!-- .content-area -->
 
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>
