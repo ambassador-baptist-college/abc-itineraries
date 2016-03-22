@@ -198,3 +198,9 @@ function register_google_map_js() {
     wp_register_script( 'abc-itineraries-map', plugins_url( 'js/initializeMap.min.js', __FILE__ ), array(), NULL, true );
 }
 add_action( 'wp_enqueue_scripts', 'register_google_map_js' );
+
+// Register backend script
+function register_backend_js() {
+    wp_enqueue_script( 'abc-itineraries-backend', plugins_url( 'js/backend.min.js', __FILE__ ), array( 'jquery' ) );
+}
+add_action( 'admin_enqueue_scripts', 'register_backend_js' );

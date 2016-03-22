@@ -11,6 +11,7 @@ module.exports = function (grunt) {
         custom: {
             files: {
                 'js/initializeMap.min.js': ['js/initializeMap.js'],
+                'js/backend.min.js': ['js/backend.js'],
             },
         },
     },
