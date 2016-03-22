@@ -23,7 +23,16 @@ get_header(); ?>
 
         <?php if ( have_posts() ) : ?>
             <header class="page-header">
-                <h1 class="page-title">All Meetings</h1>
+                <h1 class="page-title">
+                <?php
+                    if ( is_taxonomy( 'group-name' ) ) {
+                        $term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
+                        echo $term->name;
+                    } elseif ( is_archive( 'meeting' ) ) {
+                        echo 'All Archives';
+                    }
+                ?>
+                </h1>
                 <?php
                     the_archive_description( '<div class="taxonomy-description">', '</div>' );
                 ?>

@@ -109,16 +109,17 @@ add_action( 'init', 'meeting_categories', 0 );
 // Add custom archive template
 function get_meeting_archive_template( $archive_template ) {
      global $post;
-     if ( is_post_type_archive ( 'meeting' ) ) {
+     if ( is_post_type_archive ( 'meeting' ) || is_tax( 'group-name' ) ) {
           $archive_template = dirname( __FILE__ ) . '/archive-meeting.php';
      }
      return $archive_template;
 }
 add_filter( 'archive_template', 'get_meeting_archive_template' ) ;
+add_filter( 'taxonomy_archive', 'get_meeting_archive_template' ) ;
 
 // Sort by beginning date ascending
 function sort_meetings( $query ) {
-    if ( isset($query->query_vars['post_type']) && $query->query_vars['post_type'] == 'meeting' ) {
+    if ( ( isset($query->query_vars['post_type']) && $query->query_vars['post_type'] == 'meeting' ) || ( isset($query->query_vars['group-name']) ) ) {
         $query->set( 'orderby', 'meta_value_num' );
         $query->set( 'meta_key', 'begin_date' );
         $query->set( 'order', 'ASC' );
@@ -192,7 +193,7 @@ function abc_itineraries_options_page(  ) { ?>
     <?php
 }
 
-// Register script
+// Register frontend scripts and styles
 function register_google_map() {
     wp_register_script( 'google-map-api', 'https://maps.googleapis.com/maps/api/js?key=' . get_option( 'abc_itineraries_settings' )['abc_itineraries_api_key'] . '&amp;callback=initMap', array( 'abc-itineraries-map' ), NULL, true );
     wp_register_script( 'abc-itineraries-map', plugins_url( 'js/initializeMap.min.js', __FILE__ ), array( 'jquery' ), NULL, true );
