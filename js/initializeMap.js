@@ -35,9 +35,9 @@ jQuery(document).ready(function() {
     });
 
     // iterate over array and add markers to map
-    var infoWindow = new google.maps.InfoWindow({});
-    var i;
-    for (i = 0; i < locations.length; i++) {
+    var infoWindow = new google.maps.InfoWindow({}),
+        LatLngList = new Array();
+    for (var i = 0; i < locations.length; i++) {
         var thisLocation = locations[i];
 
         // get date
@@ -52,6 +52,9 @@ jQuery(document).ready(function() {
             title: dateString + ': ' + thisLocation.churchName + ' in ' + thisLocation.city + ', ' + thisLocation.state + ' ' + thisLocation.zip,
             map: map
         });
+
+        // add to latLngList
+        LatLngList.push(new google.maps.LatLng(thisLocation.latitude, thisLocation.longitude));
 
         // add click listener
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -71,8 +74,8 @@ jQuery(document).ready(function() {
                 infoWindowContent += '</p>';
 
                 // display infoWindow
-				infoWindow.setContent(infoWindowContent);
-				infoWindow.open(map, marker);
+                infoWindow.setContent(infoWindowContent);
+                infoWindow.open(map, marker);
 
                 // style table
                 console.log(thisLocation.ID);
@@ -81,4 +84,11 @@ jQuery(document).ready(function() {
             }
         })(marker, i));
     }
+
+    // fit to bounds
+    var bounds = new google.maps.LatLngBounds();
+    for (var j in LatLngList) {
+        bounds.extend(LatLngList[j]);
+    }
+    map.fitBounds(bounds);
 });
