@@ -25,6 +25,7 @@ get_header(); ?>
             <?php
             wp_enqueue_script( 'google-map-api' );
             wp_enqueue_script( 'abc-itineraries-map' );
+            wp_enqueue_style( 'abc-itineraries-map' );
             ?>
 
             <header class="page-header">
@@ -34,7 +35,7 @@ get_header(); ?>
                 ?>
             </header><!-- .page-header -->
 
-            <div id="map" style="min-height: 50vh;"></div>
+            <div id="map"></div>
 
             <table>
                 <thead>

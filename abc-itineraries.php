@@ -193,11 +193,12 @@ function abc_itineraries_options_page(  ) { ?>
 }
 
 // Register script
-function register_google_map_js() {
+function register_google_map() {
     wp_register_script( 'google-map-api', 'https://maps.googleapis.com/maps/api/js?key=' . get_option( 'abc_itineraries_settings' )['abc_itineraries_api_key'] . '&amp;callback=initMap', array( 'abc-itineraries-map' ), NULL, true );
     wp_register_script( 'abc-itineraries-map', plugins_url( 'js/initializeMap.min.js', __FILE__ ), array( 'jquery' ), NULL, true );
+    wp_register_style( 'abc-itineraries-map', plugins_url( 'css/abc-itineraries-map.css', __FILE__ ) );
 }
-add_action( 'wp_enqueue_scripts', 'register_google_map_js' );
+add_action( 'wp_enqueue_scripts', 'register_google_map' );
 
 // Register backend script
 function register_backend_js() {
