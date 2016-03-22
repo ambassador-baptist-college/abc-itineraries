@@ -77,6 +77,23 @@ get_header(); ?>
                             echo rtrim( '<br/>' . $terms_output, ', ' );
                         }
                         ?>
+                        <script type="application/ld+json">[{"@context":"http://schema.org","@type":"MusicEvent","name":"Ambassador Baptist College","startDate":"<?php the_field( 'begin_date' ); ?>","location":{"@type":"Place","name":"<?php the_title() ?>","address":{"@type":"PostalAddress"<?php
+                                    if ( get_field( 'address_1' ) ) {
+                                        echo ',"streetAddress":"' . get_field( 'address_1' );
+                                        if ( get_field( 'address_2' ) ) {
+                                            the_field( 'address_2' );
+                                        }
+                                        echo '"';
+                                    }
+                                    if ( get_field( 'city' ) ) {
+                                        echo ',"addressLocality":"' . get_field( 'city' ) . '"';
+                                    }
+                                    if ( get_field( 'state' ) ) {
+                                        echo ',"addressRegion":"' . get_field( 'state' ) . '"';
+                                    }
+                                    if ( get_field( 'city' ) ) {
+                                        echo ',"postalCode":"' . get_field( 'zip' ) . '"';
+                                    } ?>}}}]</script>
                     </td>
                     <td class="church">
                         <?php
