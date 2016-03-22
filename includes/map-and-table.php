@@ -50,7 +50,7 @@ while ( have_posts() ) : the_post(); ?>
 
             // time
             if ( $am_pm ) {
-                echo ' <span class="meridian">' . $am_pm[0] . '</span>';
+                echo ' <span class="meridian">' . implode( ', ', $am_pm ) . '</span>';
             }
 
             // group
