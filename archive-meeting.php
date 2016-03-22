@@ -22,6 +22,10 @@ get_header(); ?>
         <main id="main" class="site-main" role="main">
 
         <?php if ( have_posts() ) : ?>
+            <?php
+            wp_enqueue_script( 'google-map-api' );
+            wp_enqueue_script( 'abc-itineraries-map' );
+            ?>
 
             <header class="page-header">
                 <h1 class="page-title">All Meetings</h1>
@@ -29,6 +33,8 @@ get_header(); ?>
                     the_archive_description( '<div class="taxonomy-description">', '</div>' );
                 ?>
             </header><!-- .page-header -->
+
+            <div id="map" style="min-height: 50vh;"></div>
 
             <table>
                 <thead>
