@@ -44,23 +44,35 @@ get_header(); ?>
                 <tr id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                     <td class="date">
                        <?php
+                        // variables
+                        $begin_date     = get_field( 'begin_date' );
+                        $end_date       = get_field( 'end_date' );
+                        $am_pm          = get_field( 'am_pm' );
+                        $church_name    = get_the_title();
+                        $pastor_name    = get_field( 'pastor_name' );
+                        $address_1      = get_field( 'address_1' );
+                        $address_2      = get_field( 'address_2' );
+                        $city           = get_field( 'city' );
+                        $state          = get_field( 'state' );
+                        $zip            = get_field( 'zip' );
+                        $phone          = get_field( 'phone' );
+
                         // format
-                        $begin_date = DateTime::createFromFormat( 'Y-m-d', get_field( 'begin_date' ) );
-                        if ( get_field( 'end_date' ) ) {
-                            $end_date = DateTime::createFromFormat( 'Y-m-d', get_field( 'end_date' ) );
+                        $begin_date_object = DateTime::createFromFormat( 'Y-m-d', $begin_date );
+                        if ( $end_date ) {
+                            $end_date_object = DateTime::createFromFormat( 'Y-m-d', $end_date );
                         }
 
                         // output dates
-                        if ( get_field( 'end_date' ) ) {
-                            echo $begin_date->format( 'l, F j' ) . '&ndash;' . $end_date->format( 'l, F j, Y' );
+                        if ( $end_date ) {
+                            echo $begin_date_object->format( 'l, F j' ) . '&ndash;' . $end_date_object->format( 'l, F j, Y' );
                         } else {
-                            echo $begin_date->format( 'l, F j, Y' );
+                            echo $begin_date_object->format( 'l, F j, Y' );
                         }
 
                         // time
-                        if ( get_field( 'am_pm' ) ) {
-                            echo ' ';
-                            the_field( 'am_pm' );
+                        if ( $am_pm ) {
+                            echo ' ' . $am_pm;
                         }
 
                         // group
@@ -78,68 +90,63 @@ get_header(); ?>
                         }
                         ?>
                         <script type="application/ld+json">[{"@context":"http://schema.org","@type":"MusicEvent","name":"Ambassador Baptist College","startDate":"<?php the_field( 'begin_date' ); ?>","location":{"@type":"Place","name":"<?php the_title() ?>","address":{"@type":"PostalAddress"<?php
-                                    if ( get_field( 'address_1' ) ) {
-                                        echo ',"streetAddress":"' . get_field( 'address_1' );
-                                        if ( get_field( 'address_2' ) ) {
-                                            the_field( 'address_2' );
+                                    if ( $address_1 ) {
+                                        echo ',"streetAddress":"' . $address_1;
+                                        if ($address_2 ) {
+                                            echo $address_2;
                                         }
                                         echo '"';
                                     }
-                                    if ( get_field( 'city' ) ) {
-                                        echo ',"addressLocality":"' . get_field( 'city' ) . '"';
+                                    if ( $city ) {
+                                        echo ',"addressLocality":"' . $city . '"';
                                     }
-                                    if ( get_field( 'state' ) ) {
-                                        echo ',"addressRegion":"' . get_field( 'state' ) . '"';
+                                    if ( $state ) {
+                                        echo ',"addressRegion":"' . $state . '"';
                                     }
-                                    if ( get_field( 'city' ) ) {
-                                        echo ',"postalCode":"' . get_field( 'zip' ) . '"';
+                                    if ( $zip ) {
+                                        echo ',"postalCode":"' . $zip . '"';
                                     } ?>}}}]</script>
                     </td>
                     <td class="church">
                         <?php
                         // church name
-                        the_title();
+                        echo $church_name;
 
                         // pastor
-                        if ( get_field( 'pastor_name' ) ) {
-                            echo '<br/><span class="pastor">' . get_field( 'pastor_name' ) . '</span>';
+                        if ( $pastor_name ) {
+                            echo '<br/><span class="pastor">' . $pastor_name . '</span>';
                         }
                         ?>
                     </td>
                     <td class="location">
                        <?php
                         // address 1
-                        if ( get_field( 'address_1' ) ) {
-                            the_field( 'address_1' );
-                            echo '<br/>';
+                        if ( $address_1 ) {
+                            echo $address_1 . '<br/>';
                         }
 
                         // address 2
-                        if ( get_field( 'address_2' ) ) {
-                            the_field( 'address_2' );
-                            echo '<br/>';
+                        if ( $address_2 ) {
+                            echo $address_2 . '<br/>';
                         }
 
                         // city
-                        if ( get_field( 'city' ) ) {
-                            the_field( 'city' );
-                            echo ', ';
+                        if ( $city ) {
+                            echo $city . ', ';
                         }
                         // state
-                        if ( get_field( 'state' ) ) {
-                            the_field( 'state' );
-                            echo ' ';
+                        if ( $state ) {
+                            echo $state . ' ';
                         }
 
                         // zip
-                        if ( get_field( 'zip' ) ) {
-                            the_field( 'zip' );
-                            echo '<br/>';
+                        if ( $zip ) {
+                            echo $zip . '<br/>';
                         }
 
                         // phone
-                        if ( get_field( 'phone' ) ) {
-                            echo '<a href="tel:' . str_replace( '-', '', get_field( 'phone' ) ) . '">' . get_field( 'phone' ) . '</a>';
+                        if ( $phone ) {
+                            echo '<a href="tel:' . str_replace( '-', '', $phone ) . '">' . $phone . '</a>';
                         }
                         ?>
                     </td>
