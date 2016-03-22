@@ -132,3 +132,62 @@ function sort_meetings( $query ) {
     }
 }
 add_filter( 'pre_get_posts', 'sort_meetings' );
+
+// Add settings page
+add_action( 'admin_menu', 'abc_itineraries_add_admin_menu' );
+add_action( 'admin_init', 'abc_itineraries_settings_init' );
+
+// add to menu
+function abc_itineraries_add_admin_menu() {
+    add_submenu_page( 'edit.php?post_type=meeting', 'ABC Itineraries', 'Settings', 'manage_options', 'abc-itineraries', 'abc_itineraries_options_page' );
+}
+
+// add settings section and fields
+function abc_itineraries_settings_init() {
+    register_setting( 'abc_itineraries_options', 'abc_itineraries_settings' );
+
+    // API settings
+    add_settings_section(
+        'abc_itineraries_options_keys_section',
+        __( 'Add your Google API Key', 'abc_itineraries' ),
+        'abc_itineraries_api_settings_section_callback',
+        'abc_itineraries_options'
+    );
+
+    add_settings_field(
+        'abc_itineraries_api_key',
+        __( 'Google API Key', 'abc_itineraries' ),
+        'abc_itineraries_api_key_render',
+        'abc_itineraries_options',
+        'abc_itineraries_options_keys_section'
+    );
+}
+
+// print API Key field
+function abc_itineraries_api_key_render() {
+    $options = get_option( 'abc_itineraries_settings' ); ?>
+    <input type="text" name="abc_itineraries_settings[abc_itineraries_api_key]" placeholder="AIzaSyD4iE2xVSpkLLOXoyqT-RuPwURN3ddScAI" size="45" value="<?php echo $options['abc_itineraries_api_key']; ?>">
+    <?php
+}
+
+// print API settings description
+function abc_itineraries_api_settings_section_callback(  ) {
+    echo __( 'Enter your API Keys below. Don’t have it? <a href="https://console.developers.google.com/" target="_blank">Get it here on the Google Developers Console</a>.', 'abc_itineraries' );
+}
+
+// print form
+function abc_itineraries_options_page(  ) { ?>
+    <div class="wrap">
+       <h2>Google Maps Embed API Key</h2>
+        <form action="options.php" method="post">
+
+            <?php
+            settings_fields( 'abc_itineraries_options' );
+            do_settings_sections( 'abc_itineraries_options' );
+            submit_button();
+            ?>
+
+        </form>
+    </div>
+    <?php
+}
