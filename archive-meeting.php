@@ -31,6 +31,13 @@ get_header(); ?>
             </header><!-- .page-header -->
 
             <table>
+                <thead>
+                    <tr>
+                        <td class="date">Date</td>
+                        <td class="church">Church</td>
+                        <td class="location">Location</td>
+                    </tr>
+                </thead>
             <?php
             // Start the Loop.
             while ( have_posts() ) : the_post(); ?>
