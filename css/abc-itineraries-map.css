@@ -1,1 +1,1 @@
-#map{height:50vh;min-height:300px}.meeting{-webkit-transition:background .3s ease;transition:background .3s ease;}.meeting.highlight{background-color:#ffffe0}.location .hidden{display:none}
+#map{height:50vh;min-height:300px;margin-bottom:2em;}.meeting{-webkit-transition:background .3s ease;transition:background .3s ease;}.meeting.highlight{background-color:#ffffe0}.location .hidden{display:none}
