@@ -37,7 +37,7 @@ get_header(); ?>
 
             <div id="map"></div>
 
-            <table>
+            <table id="itinerary">
                 <thead>
                     <tr>
                         <td class="date">Date</td>
@@ -63,6 +63,7 @@ get_header(); ?>
                         $state          = get_field( 'state' );
                         $zip            = get_field( 'zip' );
                         $phone          = get_field( 'phone' );
+                        $location       = get_field( 'location' );
 
                         // format
                         $begin_date_object = DateTime::createFromFormat( 'Y-m-d', $begin_date );
@@ -72,14 +73,15 @@ get_header(); ?>
 
                         // output dates
                         if ( $end_date ) {
-                            echo $begin_date_object->format( 'l, F j' ) . '&ndash;' . $end_date_object->format( 'l, F j, Y' );
+                            echo '<meta itemprop="startDate" content="' . $begin_date_object->format( 'Y-m-d\T12:00' ) . '">' . $begin_date_object->format( 'l, F j' ) . '&ndash;<br/>' . '<meta itemprop="endDate" content="' . $end_date_object->format( 'Y-m-d\T13:00' ) . '">' . $end_date_object->format( 'l, F j, Y' );
                         } else {
-                            echo $begin_date_object->format( 'l, F j, Y' );
+                            echo '<meta itemprop="startDate" content="' . $begin_date_object->format( 'Y-m-d\T12:00' ) . '">' . $begin_date_object->format( 'l, F j, Y' );
                         }
+                        echo '<meta itemprop="duration" content="0000-00-00T01:00">';
 
                         // time
                         if ( $am_pm ) {
-                            echo ' ' . $am_pm;
+                            echo ' <span class="meridian">' . $am_pm[0] . '</span>';
                         }
 
                         // group
@@ -93,7 +95,7 @@ get_header(); ?>
                                     $term->name
                                 );
                             }
-                            echo rtrim( '<br/>' . $terms_output, ', ' );
+                            echo '<br/><span class="groupName">' . rtrim( $terms_output, ', ' ) . '</span>';
                         }
                         ?>
                         <script type="application/ld+json">[{"@context":"http://schema.org","@type":"MusicEvent","name":"Ambassador Baptist College","startDate":"<?php the_field( 'begin_date' ); ?>","location":{"@type":"Place","name":"<?php the_title() ?>","address":{"@type":"PostalAddress"<?php
@@ -117,7 +119,7 @@ get_header(); ?>
                     <td class="church">
                         <?php
                         // church name
-                        echo $church_name;
+                        echo '<span itemprop="name">' . $church_name . '</span>';
 
                         // pastor
                         if ( $pastor_name ) {
@@ -126,10 +128,11 @@ get_header(); ?>
                         ?>
                     </td>
                     <td class="location">
+                       <address>
                        <?php
                         // address 1
                         if ( $address_1 ) {
-                            echo $address_1 . '<br/>';
+                            echo '<span itemprop="streetAddress">' . $address_1 . '</span><br/>';
                         }
 
                         // address 2
@@ -139,23 +142,29 @@ get_header(); ?>
 
                         // city
                         if ( $city ) {
-                            echo $city . ', ';
+                            echo '<span itemprop="addressLocality">' . $city . '</span>, ';
                         }
                         // state
                         if ( $state ) {
-                            echo $state . ' ';
+                            echo '<span itemprop="addressRegion">' .$state . '</span> ';
                         }
 
                         // zip
                         if ( $zip ) {
-                            echo $zip . '<br/>';
+                            echo '<span itemprop="postalCode">' .$zip . '</span><br/>';
                         }
 
                         // phone
                         if ( $phone ) {
-                            echo '<a href="tel:' . str_replace( '-', '', $phone ) . '">' . $phone . '</a>';
+                            echo '<a itemprop="telephone" href="tel:' . str_replace( '-', '', $phone ) . '">' . $phone . '</a>';
+                        }
+
+                        // location
+                        if ( $location ) {
+                            echo '<span class="hidden" itemprop="latitude">' . $location['lat'] . '</span><span class="hidden" itemprop="longitude">' . $location['lng'] . '</span>';
                         }
                         ?>
+                        </address>
                     </td>
                 </tr><!-- #post-## -->
 
