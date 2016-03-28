@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: ABC Itineraries
- * Plugin URI: https://gist.github.com/macbookandrew/92f01a1be124cd2678f0
+ * Plugin URI: https://github.com/ambassador-baptist-college/abc-itineraries/
  * Description: Evangelist and Travel Group itineraries
  * Version: 1.0.0
  * Author: AndrewRMinion Design
