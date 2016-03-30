@@ -204,6 +204,9 @@ add_action( 'wp_enqueue_scripts', 'register_google_map' );
 
 // Register backend script
 function register_backend_js() {
-    wp_enqueue_script( 'abc-itineraries-backend', plugins_url( 'js/backend.min.js', __FILE__ ), array( 'jquery' ) );
+    global $post_type;
+    if ( 'meeting' == $post_type ) {
+        wp_enqueue_script( 'abc-itineraries-backend', plugins_url( 'js/backend.min.js', __FILE__ ), array( 'jquery' ) );
+    }
 }
 add_action( 'admin_enqueue_scripts', 'register_backend_js' );
