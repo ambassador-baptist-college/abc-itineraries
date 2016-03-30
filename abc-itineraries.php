@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Register Custom Post Type
-function itinerary() {
+function itinerary_post_type() {
 
     $labels = array(
         'name'                  => 'Meetings',
@@ -65,7 +65,7 @@ function itinerary() {
     register_post_type( 'meeting', $args );
 
 }
-add_action( 'init', 'itinerary', 0 );
+add_action( 'init', 'itinerary_post_type', 0 );
 
 // Register Custom Taxonomy
 function meeting_categories() {
