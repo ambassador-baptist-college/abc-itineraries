@@ -3,9 +3,10 @@
  * Plugin Name: ABC Itineraries
  * Plugin URI: https://github.com/ambassador-baptist-college/abc-itineraries/
  * Description: Evangelist and Travel Group itineraries
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: AndrewRMinion Design
  * Author URI: https://andrewrminion.com
+ * GitHub Plugin URI: https://github.com/ambassador-baptist-college/abc-itineraries/
  */
 
 if (!defined('ABSPATH')) {
