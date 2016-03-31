@@ -43,6 +43,12 @@ function itinerary_post_type() {
         'items_list_navigation' => 'Meetings list navigation',
         'filter_items_list'     => 'Filter meetings list',
     );
+    $rewrite = array(
+        'slug'                  => 'resources/traveling-groups',
+        'with_front'            => true,
+        'pages'                 => true,
+        'feeds'                 => true,
+    );
     $args = array(
         'label'                 => 'Meeting',
         'description'           => 'Evangelist and Travel Group Meetings',
@@ -58,9 +64,10 @@ function itinerary_post_type() {
         'show_in_admin_bar'     => true,
         'show_in_nav_menus'     => true,
         'can_export'            => true,
-        'has_archive'           => 'meetings',
+        'has_archive'           => 'resources/traveling-groups',
         'exclude_from_search'   => false,
         'publicly_queryable'    => true,
+        'rewrite'               => $rewrite,
         'capability_type'       => 'page',
     );
     register_post_type( 'meeting', $args );
