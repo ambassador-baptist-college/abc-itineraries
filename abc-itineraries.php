@@ -100,14 +100,20 @@ function meeting_categories() {
         'items_list'                 => 'Groups list',
         'items_list_navigation'      => 'Groups list navigation',
     );
+    $rewrite = array(
+        'slug'                       => 'resources/traveling-groups',
+        'with_front'                 => true,
+        'hierarchical'               => true,
+    );
     $args = array(
         'labels'                     => $labels,
-        'hierarchical'               => true,
+        'hierarchical'               => false,
         'public'                     => true,
         'show_ui'                    => true,
         'show_admin_column'          => true,
         'show_in_nav_menus'          => true,
         'show_tagcloud'              => true,
+        'rewrite'                    => $rewrite,
     );
     register_taxonomy( 'group-name', array( 'meeting' ), $args );
 
@@ -218,3 +224,26 @@ function register_backend_js() {
     }
 }
 add_action( 'admin_enqueue_scripts', 'register_backend_js' );
+
+// Use the same slug for post type and taxonomy
+function generate_meeting_taxonomy_rewrite_rules( $wp_rewrite ) {
+    $rules = array();
+    $post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'objects' );
+    $taxonomies = get_taxonomies( array( 'public' => true, '_builtin' => false ), 'objects' );
+
+    foreach ( $post_types as $post_type ) {
+        $post_type_name = $post_type->name; // 'developer'
+        $post_type_slug = $post_type->rewrite['slug']; // 'developers'
+
+        foreach ( $taxonomies as $taxonomy ) {
+            if ( $taxonomy->object_type[0] == $post_type_name ) {
+                $terms = get_categories( array( 'type' => $post_type_name, 'taxonomy' => $taxonomy->name, 'hide_empty' => 0 ) );
+                foreach ( $terms as $term ) {
+                    $rules[$post_type_slug . '/' . $term->slug . '/?$'] = 'index.php?' . $term->taxonomy . '=' . $term->slug;
+                }
+            }
+        }
+    }
+    $wp_rewrite->rules = $rules + $wp_rewrite->rules;
+}
+add_action('generate_rewrite_rules', 'generate_meeting_taxonomy_rewrite_rules');
