@@ -27,13 +27,16 @@ get_header(); ?>
                 <?php
                     if ( is_taxonomy( 'group-name' ) ) {
                         $term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
-                        echo $term->name;
-                    } elseif ( is_archive( 'meeting' ) ) {
-                        echo 'All Archives';
+                        echo $term->name . ' Meetings';
+                    } elseif ( is_post_type_archive( 'meeting' ) ) {
+                        echo 'All Meetings';
                     }
                 ?>
                 </h1>
                 <?php
+                    if ( is_taxonomy( 'group-name' ) ) {
+                        echo '<p><a href="' . home_url() . '/resources/traveling-groups/">Back to all meetings</a></p>';
+                    }
                     the_archive_description( '<div class="taxonomy-description">', '</div>' );
                 ?>
             </header><!-- .page-header -->
