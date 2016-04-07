@@ -247,3 +247,13 @@ function generate_meeting_taxonomy_rewrite_rules( $wp_rewrite ) {
     $wp_rewrite->rules = $rules + $wp_rewrite->rules;
 }
 add_action('generate_rewrite_rules', 'generate_meeting_taxonomy_rewrite_rules');
+
+// Modify the page title
+function filter_meeting_page_title( $title, $id = NULL ) {
+    if ( is_post_type_archive( 'meeting' ) ) {
+        $title = 'Meetings';
+    }
+
+    return $title;
+}
+add_filter( 'custom_title', 'filter_meeting_page_title' );
