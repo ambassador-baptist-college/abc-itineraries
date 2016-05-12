@@ -84,6 +84,11 @@ while ( have_posts() ) : the_post(); ?>
                         if ( $zip ) {
                             echo ',"postalCode":"' . $zip . '"';
                         } ?>}}}]</script>
+            <?php
+            if ( is_user_logged_in() ) {
+                echo '<br/><a href="' . get_edit_post_link() . '">Edit</a>';
+            }
+            ?>
         </td>
         <td class="church">
             <?php
