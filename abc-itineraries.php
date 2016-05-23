@@ -160,12 +160,12 @@ add_filter( 'pre_get_posts', 'sort_meetings' );
 add_action( 'admin_menu', 'abc_itineraries_add_admin_menu' );
 add_action( 'admin_init', 'abc_itineraries_settings_init' );
 
-// add to menu
+// Add to menu
 function abc_itineraries_add_admin_menu() {
     add_submenu_page( 'edit.php?post_type=meeting', 'ABC Itineraries', 'Settings', 'manage_options', 'abc-itineraries', 'abc_itineraries_options_page' );
 }
 
-// add settings section and fields
+// Add settings section and fields
 function abc_itineraries_settings_init() {
     register_setting( 'abc_itineraries_options', 'abc_itineraries_settings' );
 
@@ -186,19 +186,19 @@ function abc_itineraries_settings_init() {
     );
 }
 
-// print API Key field
+// Print API Key field
 function abc_itineraries_api_key_render() {
     $options = get_option( 'abc_itineraries_settings' ); ?>
     <input type="text" name="abc_itineraries_settings[abc_itineraries_api_key]" placeholder="AIzaSyD4iE2xVSpkLLOXoyqT-RuPwURN3ddScAI" size="45" value="<?php echo $options['abc_itineraries_api_key']; ?>">
     <?php
 }
 
-// print API settings description
+// Print API settings description
 function abc_itineraries_api_settings_section_callback(  ) {
     echo __( 'Enter your API Keys below. Don’t have it? <a href="https://console.developers.google.com/" target="_blank">Get it here on the Google Developers Console</a>.', 'abc_itineraries' );
 }
 
-// print form
+// Print form
 function abc_itineraries_options_page(  ) { ?>
     <div class="wrap">
        <h2>Google Maps Embed API Key</h2>
@@ -214,6 +214,74 @@ function abc_itineraries_options_page(  ) { ?>
     </div>
     <?php
 }
+
+// Add custom column headers to admin
+function abc_itineraries_custom_columns( $columns ) {
+    $custom_columns = array();
+
+    foreach ( $columns as $key => $title ) {
+        if ( 'date' == $key ) {
+            $custom_columns['pastor_name'] = 'Pastor Name';
+            $custom_columns['begin_date'] = 'Begin Date';
+            $custom_columns['location'] = 'Location';
+            $custom_columns['date'] = 'Publish Date';
+        } else {
+            $custom_columns[$key] = $title;
+        }
+    }
+
+    return $custom_columns;
+}
+add_filter( 'manage_edit-meeting_columns', 'abc_itineraries_custom_columns' );
+
+// Add custom column content to admin
+function abc_itineraries_custom_column_content( $column, $post_id ) {
+    global $post;
+
+    switch ( $column ) {
+        case 'pastor_name' :
+            the_field( 'pastor_name' );
+            break;
+
+        case 'begin_date' :
+            the_field( 'begin_date' );
+            break;
+
+        case 'location' :
+            if ( get_field( 'address_1' ) ) {
+                echo get_field( 'address_1' ) . '<br/>';
+            }
+            if ( get_field( 'address_2' ) ) {
+                echo get_field( 'address_2' ) . '<br/>';
+            }
+            echo get_field( 'city' ) . ', ' . get_field( 'state' );
+            break;
+    }
+}
+add_action( 'manage_meeting_posts_custom_column', 'abc_itineraries_custom_column_content', 10, 2 );
+
+// Make columns sortable
+function abc_itineraries_sortable_columns( $columns ) {
+    $columns['begin_date'] = 'begin_date';
+
+    return $columns;
+}
+add_filter( 'manage_edit-meeting_sortable_columns', 'abc_itineraries_sortable_columns' );
+
+// Sort by metadata
+function abc_itineraries_sort( $query ) {
+    if ( ! is_admin() || ( is_admin() && 'meeting' != $query->query_vars['post_type'] ) ) {
+        return;
+    }
+
+    // sort by begin_date when requested and by default
+    $orderby = $query->query['orderby'];
+    if ( 'begin_date' == $orderby || 'menu_order title' == $orderby ) {
+        set_query_var( 'orderby', 'meta_value' );
+        set_query_var( 'meta_key', 'begin_date' );
+    }
+}
+add_action( 'pre_get_posts', 'abc_itineraries_sort' );
 
 // Register frontend scripts and styles
 function register_google_map() {
