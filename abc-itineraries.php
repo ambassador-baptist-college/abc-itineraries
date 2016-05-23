@@ -244,7 +244,7 @@ function abc_itineraries_custom_column_content( $column, $post_id ) {
             break;
 
         case 'begin_date' :
-            the_field( 'begin_date' );
+            echo get_field( 'begin_date' ) . ' ' . implode( ', ', get_field( 'am_pm' ) );
             break;
 
         case 'location' :
