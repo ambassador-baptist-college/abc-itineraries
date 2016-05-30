@@ -54,7 +54,9 @@ jQuery(document).ready(function() {
         });
 
         // add to latLngList
-        LatLngList.push(new google.maps.LatLng(thisLocation.latitude, thisLocation.longitude));
+        if (thisLocation.latitude && thisLocation.longitude) {
+            LatLngList.push(new google.maps.LatLng(thisLocation.latitude, thisLocation.longitude));
+        }
 
         // add click listener
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
