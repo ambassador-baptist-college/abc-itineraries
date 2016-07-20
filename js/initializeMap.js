@@ -75,7 +75,8 @@ jQuery(document).ready(function() {
 
                 // style table
                 jQuery('.meeting.highlight').removeClass('highlight');
-                jQuery('#' + thisLocation.ID).addClass('highlight');
+                jQuery('#' + thisLocation.ID).addClass('highlight').show();
+                jQuery('.meeting:not(.highlight)').hide();
             }
         })(marker, i));
     }
@@ -83,6 +84,7 @@ jQuery(document).ready(function() {
     // remove highlight when info window is closed
     google.maps.event.addListener(infoWindow, 'closeclick', function(marker, i) {
         jQuery('.meeting.highlight').removeClass('highlight');
+        jQuery('.meeting').show();
     });
 
     // fit to bounds
