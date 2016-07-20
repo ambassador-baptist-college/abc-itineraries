@@ -74,12 +74,16 @@ jQuery(document).ready(function() {
                 infoWindow.open(map, marker);
 
                 // style table
-                console.info(thisLocation.ID);
                 jQuery('.meeting.highlight').removeClass('highlight');
                 jQuery('#' + thisLocation.ID).addClass('highlight');
             }
         })(marker, i));
     }
+
+    // remove highlight when info window is closed
+    google.maps.event.addListener(infoWindow, 'closeclick', function(marker, i) {
+        jQuery('.meeting.highlight').removeClass('highlight');
+    });
 
     // fit to bounds
     var bounds = new google.maps.LatLngBounds();
