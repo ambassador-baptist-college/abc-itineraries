@@ -40,16 +40,10 @@ jQuery(document).ready(function() {
     for (var i = 0; i < locations.length; i++) {
         var thisLocation = locations[i];
 
-        // get date
-        var serviceDate = new Date(thisLocation.beginDate),
-            serviceMonth = serviceDate.getMonth() + 1,
-            serviceDay = serviceDate.getDate(),
-            dateString = serviceMonth + '/' + serviceDay;
-
         // add pins
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(thisLocation.latitude, thisLocation.longitude),
-            title: dateString + ': ' + thisLocation.churchName + ' in ' + thisLocation.city + ', ' + thisLocation.state + ' ' + thisLocation.zip,
+            title: serviceDate(thisLocation.beginDate) + ': ' + thisLocation.churchName + ' in ' + thisLocation.city + ', ' + thisLocation.state + ' ' + thisLocation.zip,
             map: map
         });
 
@@ -64,7 +58,7 @@ jQuery(document).ready(function() {
                 var thisLocation = locations[i];
 
                 // set infoWindow content
-                var infoWindowContent = '<h1>' + thisLocation.churchName + '</h1><h2>' + dateString;
+                var infoWindowContent = '<h1>' + thisLocation.churchName + '</h1><h2>' + serviceDate(thisLocation.beginDate);
                 infoWindowContent += thisLocation.meridian ? ' ' + thisLocation.meridian : '';
                 infoWindowContent += ': ' + thisLocation.groupName + '</h2><p>';
                 infoWindowContent += thisLocation.pastorName ? thisLocation.pastorName + '<br/>' : '';
@@ -80,7 +74,7 @@ jQuery(document).ready(function() {
                 infoWindow.open(map, marker);
 
                 // style table
-                console.log(thisLocation.ID);
+                console.info(thisLocation.ID);
                 jQuery('.meeting.highlight').removeClass('highlight');
                 jQuery('#' + thisLocation.ID).addClass('highlight');
             }
@@ -93,4 +87,14 @@ jQuery(document).ready(function() {
         bounds.extend(LatLngList[j]);
     }
     map.fitBounds(bounds);
+
+    // date helper function
+    function serviceDate(beginDate) {
+        var beginDate = new Date(beginDate),
+            serviceMonth = beginDate.getMonth() + 1,
+            serviceDay = beginDate.getDate(),
+            dateString = serviceMonth + '/' + serviceDay;
+
+        return dateString;
+    }
 });
