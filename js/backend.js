@@ -1,8 +1,10 @@
-jQuery(document).ready(function(){
-    jQuery('[name="post_title"], #acf-field-address_1, #acf-field-address_2, #acf-field-city, #acf-field-state, #acf-field-zip').on('blur', function(){
-        var address = jQuery('[name="post_title"]').val() + ' ' + jQuery('#acf-field-address_1').val() + ' ' + jQuery('#acf-field-address_2').val() + ' ' + jQuery('#acf-field-city').val() + ', ' + jQuery('#acf-field-state').val() + ' ' + jQuery('#acf-field-zip').val();
-        console.log('address to look up: ' + address);
-        jQuery('.acf-google-map .acf-sprite-remove').trigger('click');
-        jQuery('.acf-google-map input.search, .acf-google-map .input-address').val(address);
+(function($){
+    $(document).ready(function(){
+        $('[name="post_title"], .acf-field[data-name="address_1"] input, .acf-field[data-name="address_2"] input, .acf-field[data-name="city"] input, .acf-field[data-name="state"] select, .acf-field[data-name="zip"] input').on('blur', function(){
+            var address = $('[name="post_title"]').val() + ' ' + $('.acf-field[data-name="address_1"] input').val() + ' ' + $('.acf-field[data-name="address_2"] input').val() + ' ' + $('.acf-field[data-name="city"] input').val() + ', ' + $('.acf-field[data-name="state"] select').val() + ' ' + $('.acf-field[data-name="zip"] input').val();
+            console.log('address to look up: ' + address);
+            $('.acf-google-map .acf-sprite-remove').trigger('click');
+            $('.acf-google-map input.search, .acf-google-map .input-address').val(address);
+        });
     });
-});
+})(jQuery);
