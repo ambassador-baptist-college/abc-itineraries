@@ -216,12 +216,11 @@ function abc_itineraries_options_page() { ?>
 }
 
 // Use API Key for ACF
-add_action('acf/init', 'ghc_acf_init');
-function ghc_acf_init() {
+add_action('acf/init', 'abc_acf_init');
+function abc_acf_init() {
     $options = get_option( 'abc_itineraries_settings' );
     acf_update_setting('google_api_key', get_option( $options['abc_itineraries_api_key'] ) );
 }
-
 
 // Add custom column headers to admin
 function abc_itineraries_custom_columns( $columns ) {
