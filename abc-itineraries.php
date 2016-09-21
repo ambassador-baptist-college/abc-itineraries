@@ -3,7 +3,7 @@
  * Plugin Name: ABC Itineraries
  * Plugin URI: https://github.com/ambassador-baptist-college/abc-itineraries/
  * Description: Evangelist and Travel Group itineraries
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: AndrewRMinion Design
  * Author URI: https://andrewrminion.com
  * GitHub Plugin URI: https://github.com/ambassador-baptist-college/abc-itineraries/
@@ -194,12 +194,12 @@ function abc_itineraries_api_key_render() {
 }
 
 // Print API settings description
-function abc_itineraries_api_settings_section_callback(  ) {
+function abc_itineraries_api_settings_section_callback() {
     echo __( 'Enter your API Keys below. Don’t have it? <a href="https://console.developers.google.com/" target="_blank">Get it here on the Google Developers Console</a>.', 'abc_itineraries' );
 }
 
 // Print form
-function abc_itineraries_options_page(  ) { ?>
+function abc_itineraries_options_page() { ?>
     <div class="wrap">
        <h2>Google Maps Embed API Key</h2>
         <form action="options.php" method="post">
@@ -214,6 +214,14 @@ function abc_itineraries_options_page(  ) { ?>
     </div>
     <?php
 }
+
+// Use API Key for ACF
+add_action('acf/init', 'ghc_acf_init');
+function ghc_acf_init() {
+    $options = get_option( 'abc_itineraries_settings' );
+    acf_update_setting('google_api_key', get_option( $options['abc_itineraries_api_key'] ) );
+}
+
 
 // Add custom column headers to admin
 function abc_itineraries_custom_columns( $columns ) {
