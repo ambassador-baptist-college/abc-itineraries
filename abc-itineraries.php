@@ -81,7 +81,7 @@ function meeting_categories() {
     $labels = array(
         'name'                       => 'Groups',
         'singular_name'              => 'Group',
-        'menu_name'                  => 'Group',
+        'menu_name'                  => 'Group Categories',
         'all_items'                  => 'All Groups',
         'parent_item'                => 'Parent Group',
         'parent_item_colon'          => 'Parent Group:',
