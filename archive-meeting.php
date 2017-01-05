@@ -35,7 +35,7 @@ get_header(); ?>
                 </h1>
                 <?php
                     if ( is_taxonomy( 'group-name' ) ) {
-                        echo '<p><a href="' . home_url() . '/resources/traveling-groups/">Back to all meetings</a></p>';
+                        echo '<p><a href="' . home_url() . '/meetings/">Back to all meetings</a></p>';
                     }
                     the_archive_description( '<div class="taxonomy-description">', '</div>' );
                 ?>
