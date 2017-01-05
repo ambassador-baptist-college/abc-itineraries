@@ -44,7 +44,7 @@ while ( have_posts() ) : the_post(); ?>
             if ( $end_date ) {
                 echo '<meta itemprop="startDate" content="' . $begin_date_object->format( 'Y-m-d\T12:00' ) . '">' . $begin_date_object->format( 'l, F j' ) . '&ndash;<br/>' . '<meta itemprop="endDate" content="' . $end_date_object->format( 'Y-m-d\T13:00' ) . '">' . $end_date_object->format( 'l, F j, Y' );
             } else {
-                echo '<meta itemprop="startDate" content="' . $begin_date_object->format( 'Y-m-d\T12:00' ) . '">' . $begin_date_object->format( 'l, F j, Y' );
+                echo '<meta itemprop="startDate" content="' . $begin_date_object->format( 'Y-m-d\T12:00' ) . '">' . $begin_date_object->format( 'l, F j, Y' ) . '<meta itemprop="endDate" content="' . $begin_date_object->format( 'Y-m-d\T13:00' ) . '">';
             }
             echo '<meta itemprop="duration" content="0000-00-00T01:00">';
 

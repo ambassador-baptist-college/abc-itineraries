@@ -25,6 +25,7 @@ jQuery(document).ready(function() {
         church.zip          = jQuery(this).find('[itemprop="postalCode"]').html();
         church.telephone    = jQuery(this).find('[itemprop="telephone"]').html();
         church.beginDate    = jQuery(this).find('[itemprop="startDate"]').attr('content');
+        church.endDate      = jQuery(this).find('[itemprop="endDate"]').attr('content');
         church.meridian     = jQuery(this).find('.meridian').html();
         church.groupName    = jQuery(this).find('span.groupName').html();
         church.latitude     = jQuery(this).find('[itemprop="latitude"]').html();
@@ -58,7 +59,7 @@ jQuery(document).ready(function() {
                 var thisLocation = locations[i];
 
                 // set infoWindow content
-                var infoWindowContent = '<h1>' + thisLocation.churchName + '</h1><h2>' + serviceDate(thisLocation.beginDate);
+                var infoWindowContent = '<h1>' + thisLocation.churchName + '</h1><h2>' + serviceDate(thisLocation.beginDate, thisLocation.endDate);
                 infoWindowContent += thisLocation.meridian ? ' ' + thisLocation.meridian : '';
                 infoWindowContent += ': ' + thisLocation.groupName + '</h2><p>';
                 infoWindowContent += thisLocation.pastorName ? thisLocation.pastorName + '<br/>' : '';
@@ -95,12 +96,28 @@ jQuery(document).ready(function() {
     map.fitBounds(bounds);
 
     // date helper function
-    function serviceDate(beginDate) {
+    function serviceDate(beginDate, endDate) {
         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             beginDate = new Date(beginDate),
+            endDate = new Date(endDate),
+            beginYear = beginDate.getFullYear(),
             beginMonth = months[beginDate.getMonth()],
             beginDay = beginDate.getDate(),
-            dateString = beginMonth + ' ' + beginDay;
+            endYear = endDate.getFullYear(),
+            endMonth = months[endDate.getMonth()],
+            endDay = endDate.getDate(),
+            dateString = beginMonth + ' ' + beginDay + ', ' + beginYear;
+
+        // handle end date
+        if (endDay !== beginDay) {
+            if (endYear === beginYear) {
+                dateString = dateString.replace(', ' + beginYear, '&ndash;');
+            }
+            if (endMonth != beginMonth) {
+                dateString = dateString + endMonth + ' ';
+            }
+            dateString = dateString + endDay + ', ' + endYear;
+        }
 
         return dateString;
     }
