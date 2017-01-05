@@ -338,3 +338,36 @@ function filter_meeting_page_title( $title, $id = NULL ) {
     return $title;
 }
 add_filter( 'custom_title', 'filter_meeting_page_title' );
+
+// Add shortcode
+function abc_itinerary_shortcode( $attributes ) {
+    $shortcode_attributes = shortcode_atts( array (
+        'category' => NULL,
+    ), $attributes );
+
+    // set up query args
+    $itinerary_query_args = array(
+        'post_type'     => 'meeting',
+        'tax_query'     => array(
+            array(
+                'taxonomy'  => 'group-name',
+                'field'     => 'term_id',
+                'terms'     => explode( ',', esc_attr( $shortcode_attributes['category'] ) ),
+            ),
+        ),
+    );
+
+    global $wp_query;
+    $original_query = $wp_query;
+    $wp_query = new WP_Query( $itinerary_query_args );
+
+    if ( $wp_query->have_posts() ) {
+        ob_start();
+        include( 'includes/map-and-table.php' );
+    }
+    wp_reset_postdata();
+    $wp_query = $original_query;
+
+    return ob_get_clean();
+}
+add_shortcode( 'abc_itinerary', 'abc_itinerary_shortcode' );
