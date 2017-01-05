@@ -96,10 +96,11 @@ jQuery(document).ready(function() {
 
     // date helper function
     function serviceDate(beginDate) {
-        var beginDate = new Date(beginDate),
-            serviceMonth = beginDate.getMonth() + 1,
-            serviceDay = beginDate.getDate(),
-            dateString = serviceMonth + '/' + serviceDay;
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            beginDate = new Date(beginDate),
+            beginMonth = months[beginDate.getMonth()],
+            beginDay = beginDate.getDate(),
+            dateString = beginMonth + ' ' + beginDay;
 
         return dateString;
     }
