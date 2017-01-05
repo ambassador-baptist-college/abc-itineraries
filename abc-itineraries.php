@@ -3,7 +3,7 @@
  * Plugin Name: ABC Itineraries
  * Plugin URI: https://github.com/ambassador-baptist-college/abc-itineraries/
  * Description: Evangelist and Travel Group itineraries
- * Version: 1.0.4
+ * Version: 1.0.5
  * Author: AndrewRMinion Design
  * Author URI: https://andrewrminion.com
  * GitHub Plugin URI: https://github.com/ambassador-baptist-college/abc-itineraries/
@@ -12,6 +12,8 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+
+CONST ABC_ITINERARIES_PLUGIN_VERSION = '1.0.5';
 
 // Register Custom Post Type
 function itinerary_post_type() {
@@ -292,8 +294,8 @@ add_action( 'pre_get_posts', 'abc_itineraries_sort' );
 // Register frontend scripts and styles
 function register_google_map() {
     wp_register_script( 'google-map-api', 'https://maps.googleapis.com/maps/api/js?key=' . get_option( 'abc_itineraries_settings' )['abc_itineraries_api_key'] . '&amp;callback=initMap', array( 'abc-itineraries-map' ), NULL, true );
-    wp_register_script( 'abc-itineraries-map', plugins_url( 'js/initializeMap.min.js', __FILE__ ), array( 'jquery' ), NULL, true );
-    wp_register_style( 'abc-itineraries-map', plugins_url( 'css/abc-itineraries-map.css', __FILE__ ) );
+    wp_register_script( 'abc-itineraries-map', plugins_url( 'js/initializeMap.min.js', __FILE__ ), array( 'jquery' ), ABC_ITINERARIES_PLUGIN_VERSION, true );
+    wp_register_style( 'abc-itineraries-map', plugins_url( 'css/abc-itineraries-map.css', __FILE__ ), array(), ABC_ITINERARIES_PLUGIN_VERSION );
 }
 add_action( 'wp_enqueue_scripts', 'register_google_map' );
 
@@ -301,7 +303,7 @@ add_action( 'wp_enqueue_scripts', 'register_google_map' );
 function register_backend_js() {
     global $post_type;
     if ( 'meeting' == $post_type ) {
-        wp_enqueue_script( 'abc-itineraries-backend', plugins_url( 'js/backend.min.js', __FILE__ ), array( 'jquery' ) );
+        wp_enqueue_script( 'abc-itineraries-backend', plugins_url( 'js/backend.min.js', __FILE__ ), array( 'jquery' ), ABC_ITINERARIES_PLUGIN_VERSION );
     }
 }
 add_action( 'admin_enqueue_scripts', 'register_backend_js' );
