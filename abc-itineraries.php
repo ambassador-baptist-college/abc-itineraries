@@ -139,9 +139,8 @@ function sort_meetings( $query ) {
         $query->set( 'meta_query', array(
             'begin_date' => array(
                 'key'       => 'begin_date',
-                'value'     => date( 'Y-m-d' ),
+                'value'     => date( 'Ymd' ),
                 'compare'   => '>=',
-                'type'      => 'date',
             ),
             'am_pm' => array(
                 'key'       => 'am_pm',
@@ -251,7 +250,7 @@ function abc_itineraries_custom_column_content( $column, $post_id ) {
             break;
 
         case 'begin_date' :
-            echo get_field( 'begin_date' ) . ' ' . implode( ', ', get_field( 'am_pm' ) );
+            echo get_field( 'begin_date' ) . ' ' . ( is_array( get_field( 'am_pm' ) ) ? implode( ', ', get_field( 'am_pm' ) ) : '' );
             break;
 
         case 'location' :
