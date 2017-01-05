@@ -359,12 +359,12 @@ function abc_itinerary_shortcode( $attributes ) {
         ),
     );
 
+    ob_start();
     global $wp_query;
     $original_query = $wp_query;
     $wp_query = new WP_Query( $itinerary_query_args );
 
     if ( $wp_query->have_posts() ) {
-        ob_start();
         include( 'includes/map-and-table.php' );
     }
     wp_reset_postdata();
