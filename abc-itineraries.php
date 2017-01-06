@@ -135,9 +135,9 @@ add_filter( 'taxonomy_archive', 'get_meeting_archive_template' ) ;
 
 // Sort by beginning date ascending
 function sort_meetings( $query ) {
-    if ( ( isset($query->query_vars['post_type']) && $query->query_vars['post_type'] == 'meeting' ) || ( isset($query->query_vars['group-name']) ) ) {
+    if ( 'meeting' == $query->get_post_type() || $query->is_tax( 'group-name' ) ) {
+
         $query->set( 'posts_per_page', -1 );
-        $query->set( 'meta_key', 'begin_date' );
         $query->set( 'meta_query', array(
             'begin_date' => array(
                 'key'       => 'begin_date',
@@ -151,8 +151,7 @@ function sort_meetings( $query ) {
         $query->set( 'orderby', array(
             'begin_date' => 'ASC',
             'am_pm'      => 'ASC',
-        )
-        );
+        ));
     }
 }
 add_filter( 'pre_get_posts', 'sort_meetings' );
@@ -275,21 +274,6 @@ function abc_itineraries_sortable_columns( $columns ) {
     return $columns;
 }
 add_filter( 'manage_edit-meeting_sortable_columns', 'abc_itineraries_sortable_columns' );
-
-// Sort by metadata
-function abc_itineraries_sort( $query ) {
-    if ( ! is_admin() || ( is_admin() && 'meeting' != $query->query_vars['post_type'] ) ) {
-        return;
-    }
-
-    // sort by begin_date when requested and by default
-    $orderby = $query->query['orderby'];
-    if ( 'begin_date' == $orderby || 'menu_order title' == $orderby ) {
-        set_query_var( 'orderby', 'meta_value' );
-        set_query_var( 'meta_key', 'begin_date' );
-    }
-}
-add_action( 'pre_get_posts', 'abc_itineraries_sort' );
 
 // Register frontend scripts and styles
 function register_google_map() {
