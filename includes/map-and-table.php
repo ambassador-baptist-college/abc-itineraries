@@ -55,16 +55,22 @@ while ( have_posts() ) : the_post(); ?>
 
             // group
             $terms = get_the_terms( get_the_ID(), 'group-name' );
+
             if ( $terms ) {
                 $terms_output = NULL;
                 foreach ( $terms as $term ) {
-                    $terms_output .= sprintf(
-                        '<a href="%1$s" title="%2$s">%2$s</a>, ',
-                        get_term_link( $term->term_id ),
-                        $term->name
-                    );
+                    // handle single terms or single terms when parent is used
+                    if ( ! isset( $single_term ) || ( $single_term && $term->parent != 0 ) ) {
+                        $terms_output .= sprintf(
+                            '<a href="%1$s" title="%2$s">%2$s</a>, ',
+                            get_term_link( $term->term_id ),
+                            $term->name
+                        );
+                    }
                 }
-                echo '<br/><span class="groupName">' . rtrim( $terms_output, ', ' ) . '</span>';
+                if ( $terms_output ) {
+                    echo '<br/><span class="groupName">' . rtrim( $terms_output, ', ' ) . '</span>';
+                }
             }
             ?>
             <script type="application/ld+json">[{"@context":"http://schema.org","@type":"MusicEvent","name":"Ambassador Baptist College","startDate":"<?php the_field( 'begin_date' ); ?>","location":{"@type":"Place","name":"<?php the_title() ?>","address":{"@type":"PostalAddress"<?php

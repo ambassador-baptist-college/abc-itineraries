@@ -330,15 +330,17 @@ function abc_itinerary_shortcode( $attributes ) {
     $shortcode_attributes = shortcode_atts( array (
         'category' => NULL,
     ), $attributes );
+    $terms = explode( ',', esc_attr( $shortcode_attributes['category'] ) );
 
     // set up query args
     $itinerary_query_args = array(
-        'post_type'     => 'meeting',
-        'tax_query'     => array(
+        'post_type'         => 'meeting',
+        'posts_per_page'    => -1,
+        'tax_query'         => array(
             array(
                 'taxonomy'  => 'group-name',
                 'field'     => 'term_id',
-                'terms'     => explode( ',', esc_attr( $shortcode_attributes['category'] ) ),
+                'terms'     => $terms,
             ),
         ),
     );
@@ -349,6 +351,11 @@ function abc_itinerary_shortcode( $attributes ) {
     $wp_query = new WP_Query( $itinerary_query_args );
 
     if ( $wp_query->have_posts() ) {
+        // don’t show group name if only one is set in the shortcode
+        if ( count( $terms ) == 1 ) {
+            $single_term = true;
+        }
+
         include( 'includes/map-and-table.php' );
     }
     wp_reset_postdata();
