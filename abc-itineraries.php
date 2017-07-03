@@ -135,8 +135,7 @@ add_filter( 'taxonomy_archive', 'get_meeting_archive_template' ) ;
 
 // Sort by beginning date ascending
 function sort_meetings( $query ) {
-    if ( 'meeting' == $query->get_post_type() || $query->is_tax( 'group-name' ) ) {
-
+    if ( 'meeting' == $query->get( 'post_type' ) || $query->is_tax( 'group-name' ) ) {
         $query->set( 'posts_per_page', -1 );
         $query->set( 'meta_query', array(
             'begin_date' => array(
