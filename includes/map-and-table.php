@@ -16,7 +16,7 @@ wp_enqueue_style( 'abc-itineraries-map' );
     </thead>
 <?php
 // Start the Loop.
-while ( have_posts() ) : the_post(); ?>
+while ( $itinerary_query->have_posts() ) : $itinerary_query->the_post(); ?>
     <tr id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
         <td class="date">
            <?php

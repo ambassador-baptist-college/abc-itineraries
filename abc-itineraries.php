@@ -345,11 +345,9 @@ function abc_itinerary_shortcode( $attributes ) {
     );
 
     ob_start();
-    global $wp_query;
-    $original_query = $wp_query;
-    $wp_query = new WP_Query( $itinerary_query_args );
+    $itinerary_query = new WP_Query( $itinerary_query_args );
 
-    if ( $wp_query->have_posts() ) {
+    if ( $itinerary_query->have_posts() ) {
         // don’t show group name if only one is set in the shortcode
         if ( count( $terms ) == 1 ) {
             $single_term = true;
@@ -358,7 +356,6 @@ function abc_itinerary_shortcode( $attributes ) {
         include( 'includes/map-and-table.php' );
     }
     wp_reset_postdata();
-    $wp_query = $original_query;
 
     return ob_get_clean();
 }
