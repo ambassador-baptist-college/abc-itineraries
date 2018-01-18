@@ -19,7 +19,7 @@ CONST ABC_ITINERARIES_PLUGIN_VERSION = '1.0.6';
 function itinerary_post_type() {
 
     $labels = array(
-        'name'                  => 'Meetings',
+        'name'                  => 'Meeting',
         'singular_name'         => 'Meeting',
         'menu_name'             => 'Meetings',
         'name_admin_bar'        => 'Meetings',
