@@ -31,6 +31,7 @@ while ( have_posts() ) : the_post(); ?>
             $city           = get_field( 'city' );
             $state          = get_field( 'state' );
             $zip            = get_field( 'zip' );
+            $country        = get_field( 'country' );
             $phone          = get_field( 'phone' );
             $location       = get_field( 'location' );
 
@@ -89,6 +90,9 @@ while ( have_posts() ) : the_post(); ?>
                         }
                         if ( $zip ) {
                             echo ',"postalCode":"' . $zip . '"';
+                        }
+                        if ( $country ) {
+                            echo ',"country":"' . $country . '"';
                         } ?>}}}]</script>
             <?php
             if ( is_user_logged_in() ) {
@@ -122,16 +126,21 @@ while ( have_posts() ) : the_post(); ?>
 
             // city
             if ( $city ) {
-                echo '<span itemprop="addressLocality">' . $city . '</span>, ';
+                echo '<span itemprop="addressLocality">' . $city . '</span>';
             }
             // state
             if ( $state ) {
-                echo '<span itemprop="addressRegion">' .$state . '</span> ';
+                echo ', <span itemprop="addressRegion">' .$state . '</span>';
             }
 
             // zip
             if ( $zip ) {
-                echo '<span itemprop="postalCode">' .$zip . '</span><br/>';
+                echo ' <span itemprop="postalCode">' .$zip . '</span><br/>';
+            }
+
+            // country
+            if ( $country !== 'United States' ) {
+                echo '<br/><span itemprop="country">' .$country . '</span>';
             }
 
             // phone
