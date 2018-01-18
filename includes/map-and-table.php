@@ -135,17 +135,17 @@ while ( have_posts() ) : the_post(); ?>
 
             // zip
             if ( $zip ) {
-                echo ' <span itemprop="postalCode">' .$zip . '</span><br/>';
+                echo ' <span itemprop="postalCode">' .$zip . '</span>';
             }
 
             // country
-            if ( $country !== 'United States' ) {
+            if ( isset( $country ) && $country !== '' && $country !== 'United States' ) {
                 echo '<br/><span itemprop="country">' .$country . '</span>';
             }
 
             // phone
             if ( $phone ) {
-                echo '<a itemprop="telephone" href="tel:' . str_replace( '-', '', $phone ) . '">' . $phone . '</a>';
+                echo '<br/><a itemprop="telephone" href="tel:' . str_replace( '-', '', $phone ) . '">' . $phone . '</a>';
             }
 
             // location
