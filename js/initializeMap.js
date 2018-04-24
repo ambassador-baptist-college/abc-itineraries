@@ -91,10 +91,15 @@ jQuery(document).ready(function() {
 
     // fit to bounds
     var bounds = new google.maps.LatLngBounds();
-    for (var j in LatLngList) {
-        bounds.extend(LatLngList[j]);
+    if (LatLngList.length > 1) {
+        for (var j in LatLngList) {
+            bounds.extend(LatLngList[j]);
+        }
+        map.fitBounds(bounds);
+    } else {
+        map.setCenter(LatLngList[0]);
+        map.setZoom(9);
     }
-    map.fitBounds(bounds);
 
     // date helper function
     function serviceDate(beginDate, endDate) {

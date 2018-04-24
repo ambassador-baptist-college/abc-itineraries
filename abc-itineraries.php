@@ -1,9 +1,9 @@
 <?php
-/*
+/**
  * Plugin Name: ABC Itineraries
  * Plugin URI: https://github.com/ambassador-baptist-college/abc-itineraries/
  * Description: Evangelist and Travel Group itineraries
- * Version: 1.0.7
+ * Version: 1.1.0
  * Author: AndrewRMinion Design
  * Author URI: https://andrewrminion.com
  * GitHub Plugin URI: https://github.com/ambassador-baptist-college/abc-itineraries/
@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-CONST ABC_ITINERARIES_PLUGIN_VERSION = '1.0.7';
+CONST ABC_ITINERARIES_PLUGIN_VERSION = '1.1.0';
 
 // Register Custom Post Type
 function itinerary_post_type() {
@@ -46,7 +46,7 @@ function itinerary_post_type() {
         'filter_items_list'     => 'Filter meetings list',
     );
     $rewrite = array(
-        'slug'                  => 'meetings',
+        'slug'                  => 'meeting',
         'with_front'            => true,
         'pages'                 => true,
         'feeds'                 => true,
@@ -363,3 +363,15 @@ function abc_itinerary_shortcode( $attributes ) {
     return ob_get_clean();
 }
 add_shortcode( 'abc_itinerary', 'abc_itinerary_shortcode' );
+
+// Add single content
+function abc_itinerary_single_content( $content ) {
+    if ( is_singular( 'meeting' ) ) {
+        ob_start();
+        include 'includes/single-meeting.php';
+        $content .= ob_get_clean();
+    }
+
+    return $content;
+}
+add_filter( 'the_content', 'abc_itinerary_single_content' );
