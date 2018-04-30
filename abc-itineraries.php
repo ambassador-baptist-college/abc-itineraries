@@ -327,22 +327,37 @@ add_filter( 'custom_title', 'filter_meeting_page_title' );
 // Add shortcode
 function abc_itinerary_shortcode( $attributes ) {
     $shortcode_attributes = shortcode_atts( array (
-        'category' => NULL,
+        'category'          => NULL,
+		'category_exclude'  => NULL,
     ), $attributes );
-    $terms = explode( ',', esc_attr( $shortcode_attributes['category'] ) );
+    $terms_include = explode( ',', esc_attr( $shortcode_attributes['category'] ) );
+    $terms_exclude = explode( ',', esc_attr( $shortcode_attributes['category_exclude'] ) );
 
     // set up query args
     $itinerary_query_args = array(
         'post_type'         => 'meeting',
         'posts_per_page'    => -1,
         'tax_query'         => array(
-            array(
-                'taxonomy'  => 'group-name',
-                'field'     => 'term_id',
-                'terms'     => $terms,
-            ),
-        ),
+			'relation'	=> 'AND',
+		),
     );
+
+	if ( ! empty( $shortcode_attributes['category'] ) ) {
+		$itinerary_query_args['tax_query'][] = array(
+			'taxonomy'  => 'group-name',
+			'field'     => 'term_id',
+			'terms'     => $terms_include,
+		);
+	}
+
+	if ( ! empty( $shortcode_attributes['category_exclude'] ) ) {
+		$itinerary_query_args['tax_query'][] = array(
+			'taxonomy'  => 'group-name',
+			'field'     => 'term_id',
+			'terms'     => $terms_exclude,
+			'operator'  => 'NOT IN',
+		);
+	}
 
     ob_start();
     global $wp_query;
@@ -351,7 +366,7 @@ function abc_itinerary_shortcode( $attributes ) {
 
     if ( $wp_query->have_posts() ) {
         // don’t show group name if only one is set in the shortcode
-        if ( count( $terms ) == 1 ) {
+        if ( count( $terms_include ) === 1 || $terms_exclude === 1 ) {
             $single_term = true;
         }
 
