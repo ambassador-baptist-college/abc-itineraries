@@ -50,16 +50,13 @@ if ( is_singular() ) {
         if ( $terms ) {
             $terms_output = NULL;
             foreach ( $terms as $term ) {
-                // handle single terms or single terms when parent is used
-                if ( ! isset( $single_term ) || ( $single_term && $term->parent != 0 ) ) {
-                    $terms_output .= sprintf(
-                        '<a href="%1$s" title="%2$s">%2$s</a>, ',
-                        get_term_link( $term->term_id ),
-                        $term->name
-                    );
-                }
+                $terms_output .= sprintf(
+                    '<a href="%1$s" title="%2$s">%2$s</a>, ',
+                    get_term_link( $term->term_id ),
+                    $term->name
+                );
             }
-            if ( $terms_output ) {
+            if ( ! empty( $terms_output ) ) {
                 echo '<br/><span class="groupName">' . rtrim( $terms_output, ', ' ) . '</span>';
             }
         }

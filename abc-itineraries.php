@@ -365,11 +365,6 @@ function abc_itinerary_shortcode( $attributes ) {
     $wp_query = new WP_Query( $itinerary_query_args );
 
     if ( $wp_query->have_posts() ) {
-        // don’t show group name if only one is set in the shortcode
-        if ( count( $terms_include ) === 1 || $terms_exclude === 1 ) {
-            $single_term = true;
-        }
-
         include( 'includes/map-and-table.php' );
     }
     wp_reset_postdata();
